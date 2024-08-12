@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order">
+        <column xsi:type="int" name="anti_fraud_checked" unsigned="true" nullable="false" identity="false" default="0"/>
+    </table>
+    <table name="sales_order_grid">
+        <column xsi:type="int" name="anti_fraud_checked" unsigned="true" nullable="false" identity="false" default="0"/>
+    </table>
+</schema>

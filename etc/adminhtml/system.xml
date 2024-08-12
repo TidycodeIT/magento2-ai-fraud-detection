@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="tidycode" translate="label" sortOrder="100">
+            <label>Tidycode</label>
+        </tab>
+        <section id="fraud_detection" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>Order fraud detection</label>
+            <tab>tidycode</tab>
+            <resource>Tidycode_AIFraudDetection::tidycode_ai_fraud_detection_config</resource>
+
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>General</label>
+
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="api_key" translate="label" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API key</label>
+                    <comment>Your API key provided by Tidycode</comment>
+                    <depends>
+                        <field id="fraud_detection/general/enable">1</field>
+                    </depends>
+                </field>
+                <field id="payment_mapping" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Payment mapping</label>
+                    <frontend_model>Tidycode\AIFraudDetection\Model\Config\PaymentMapping</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment><![CDATA[For payment methods, the tool accepts specific identification codes that are universal to each ecommerce platform<br>
+                        Therefore, you must group and map the payment methods in your ecommerce, with the codes that the tool accepts<br>
+                        For example, Adyen and Stripe both handle credit cards, and will both match the 'cc' code,
+                        PayPal Express Checkout and PayPall Billing Agreement both match the code 'pp'<br>
+                        <b>IMPORTANT: Insert API key and save to see options!</b>]]>
+                    </comment>
+                    <depends>
+                        <field id="fraud_detection/general/enable">1</field>
+                    </depends>
+                </field>
+                <field id="threshold_id" translate="label" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Threshold order ID</label>
+                    <comment>Only orders with order_id greater than the one entered will be exported, so orders prior to installation of the module will not be checked.
+                        Leave blank to export them all.
+                    </comment>
+                    <depends>
+                        <field id="fraud_detection/general/enable">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="order_analysis" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Order analysis</label>
+                <depends>
+                    <field id="fraud_detection/general/enable">1</field>
+                </depends>
+
+                <field id="fraud_management_mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Fraud management mode</label>
+                    <source_model>Tidycode\AIFraudDetection\Model\Config\ManagementFraud</source_model>
+                    <comment><![CDATA[The tool can tell if it suspects the order is a fraud and with what probability:<br>
+                        - Choose "Fully Managed" to let the tool decide for itself when to block the order or not<br>
+                        - Choose "Risk level" to enter the maximum risk level, from 1 to 10, that you are willing to accept]]>
+                    </comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="risk_level" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Risk level</label>
+                    <source_model>Tidycode\AIFraudDetection\Model\Config\RiskLevel</source_model>
+                    <comment>Based on the probability calculated by the tool, all orders with a risk level lower than the one entered will not be blocked</comment>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="fraud_detection/order_analysis/fraud_management_mode">risk_level</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

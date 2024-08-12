@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- SERVICE CONTRACT -->
+    <preference for="Tidycode\AIFraudDetection\Api\OrderAnalysisInterface" type="Tidycode\AIFraudDetection\Service\OrderAnalysis"/>
+    <preference for="Tidycode\AIFraudDetection\Api\ReportFalsePositiveInterface" type="Tidycode\AIFraudDetection\Service\ReportFalsePositive"/>
+    <preference for="Tidycode\AIFraudDetection\Api\ReportFalseNegativeInterface" type="Tidycode\AIFraudDetection\Service\ReportFalseNegative"/>
+
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="anti_fraud_checked" xsi:type="string">sales_order.anti_fraud_checked</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="tidycode_aifrauddetection_analyze_order" xsi:type="object">Tidycode\AIFraudDetection\Console\Command\AnalyzeOrder</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
