@@ -1,6 +1,6 @@
 {
     "name": "tidycode/magento2-ai-fraud-detection",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Allows you to analyze orders placed and determine which of them are suspected frauds. You can specify the degree of personally acceptable risk or report fali positives and false negatives",
     "type": "magento2-module",
     "require": {

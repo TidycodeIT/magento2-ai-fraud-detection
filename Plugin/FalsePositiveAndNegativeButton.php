@@ -31,7 +31,7 @@ class FalsePositiveAndNegativeButton
      */
     public function beforeSetLayout(Subject $subject, LayoutInterface $layout): array
     {
-        if (!$this->moduleConfig->isEnabled($subject->getOrderId())) {
+        if (!$this->moduleConfig->isEnabled($subject->getOrder()->getStoreId())) {
             return [$layout];
         }
         $orderStatus = $subject->getOrder()->getStatus();
